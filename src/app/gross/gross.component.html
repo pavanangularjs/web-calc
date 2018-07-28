@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SNAP (Food Stamp) Monthly Budget Sheet - Tennessee Department of Human Services</title>
+  <meta name="keywords" content="SNAP Calculator, Food Stamp Calculator, DHS Calculator" />
+  <meta name="description" content="Online SNAP (Food Stamp) Monthly Budget Sheet Calculator" />
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+</head>
+
+<body>
+  <form class="form-inline" action="" method="POST">
+    <div class="container-fluid">
+            <table class="table table-bordered" id="table1">
+                <tbody>
+                    <tr>
+                        <td align="center" style="white-space:nowrap;background-color:#cce0ff;" colspan="2">
+                            <h2>Families First<br />Benifits Calculator</h2>
+                            <p>
+                                <a data-toggle="modal" href="#howToUse">How to Use This Calculator</a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="white-space:nowrap;" colspan="2">
+                            Month / Day / Year<br>
+                            <input class="form-control form-control-inline" type="text" name="benmm" size="2" maxlength="2" style="border: 1px dashed gray;" id="benefitDateMMid" readonly="" /> /
+                            <input class="form-control form-control-inline" type="text" name="bendd" size="2" maxlength="2" style="border: 1px dashed gray;" id="benefitDateDDid"  readonly="" /> /
+                            <input class="form-control form-control-inline" type="text" name="benyyyy" size="4" maxlength="4" style="border: 1px dashed gray;" id="benefitDateYYYYid" readonly="" />
+                        </td>
+                    </tr>
+                    <tr>
+            <td align="justify" class="col-xs-6">
+              <label for="numIndAssistGroup">
+                Number of individuals in assistance group who are earning money
+              </label>
+            </td>
+            <td align="center" class="col-xs-6">
+              <input class="form-control" type="text" [(ngModel)]="worksize" size="2" name="worksize" maxlength="2">
+            </td>
+            <tr>
+              <td align="justify" class="col-xs-6">
+                <label for="numIndEarnMoney">
+                  Self Employment Income and Gross Earnings for each person
+                </label>
+              </td>
+              <td align="center" class="col-xs-6">
+                <div class="container-fluid">
+                  <div *ngFor="let dummy of ' '.repeat(worksize).split(''), let x = index">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td align="center" class="col-xs-2">
+                            Net Self Employment for Person {{x+1}}
+                            <input class="form-control" type="text" size="8" maxlength="8" id="self{{x+1}}id" />
+                          </td>
+                          <td align="center" class="col-xs-2">
+                            Gross Earnings for Person {{x+1}}
+                            <input class="form-control" type="text" size="8" maxlength="8" id="other{{x+1}}id" />
+                          </td>
+                          
+                          
+                          <td align="center" class="col-xs-2">
+                            Total Earned Income for Person {{x+1}}
+                            <input class="form-control" type="text" size="8" maxlength="8" id="net{{x+1}}id" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <input type="submit" value='Submit' (click)="calcTotalNet($event)">
+              </td>
+            </tr>
+            
+            <tr>
+              <td  class="col-xs-6">
+                <label> Total Earned Income from all Individuals </label>
+              </td>
+              <td align="right">
+                <b>=</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="totalinc" id="total" [(ngModel)]="totalnet" (change)="calcTotalNet($event)" (ngModelChange)="calcTotalNet($event)"readonly=""/>
+              </td>
+            </tr>
+            <tr>
+              <td align="justify" class="col-xs-6">
+                <label> Child Support Income </label>
+              </td>
+              <td>
+                <b>+</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="childsup" [(ngModel)]="childsupport" (change)="calcTotalNet($event)" />
+              </td>
+            </tr>
+     	    <tr>
+              <td align="justify" class="col-xs-6">
+                <label> Other unearned Income </label>
+              </td>
+              <td>
+                <b>+</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="otherunea" [(ngModel)]="otherunearned" (change)="calcTotalNet($event)" />
+              </td>
+            </tr>
+            <tr>
+              <td align="justify" class="col-xs-6">
+                <label> Deemed Income </label>
+              </td>
+              <td>
+                <b>+</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="deemed" [(ngModel)]="deemed" (change)="calcTotalNet($event)" />
+              </td>
+            </tr>
+            <tr>
+                <tr>
+              <td  class="col-xs-6">
+                <label> Total unearned Income </label>
+              </td>
+              <td align="right">
+                <b>=</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="totalunearned" [(ngModel)]="totalunearned" (change)="calcTotalNet($event)" />
+              </td>
+            </tr>
+            <tr>
+              <td  class="col-xs-6">
+                <label> Total Countable Gross Income </label>
+              </td>
+              <td align="right">
+                <b>=</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="totalnetincome" [(ngModel)]="totalnetincome" />
+              </td>
+            </tr>
+            <tr>
+              <td  class="col-xs-6">
+                <label> AU Size </label>
+              </td>
+              <td>
+               
+                <input class="form-control" type="text" size="2" maxlength="2" name="ausize" [(ngModel)]="ausize" (change)="grossTest($event)"/>
+              </td>
+            </tr>
+            <tr>
+              <td  class="col-xs-6">
+                <label> Gross Income Standard </label>
+              </td>
+              <td align="right">
+               
+                <input class="form-control" type="text" size="8" maxlength="8" name="incstandard" [(ngModel)]="incstandard" />
+              </td>
+            </tr>
+
+
+                </tbody>
+            </table>
+            
+ <label>Pass/Fail Gross Income Test &nbsp; </label><input class="form-control" type="text" size="8" maxlength="8" name="result" id='result' />           
+        </div>
+        <div  class="wrap">
+      <input align="right" type="button" value="Reset" (click)="resetAll($event)">
+    </div>
+</form>
+        <div *ngIf="shownext"><app-net></app-net></div>

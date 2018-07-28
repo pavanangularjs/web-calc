@@ -1,0 +1,276 @@
+
+<html>
+<body>
+  <form class="form-inline" action="" method="POST">
+    <div class="container-fluid">
+      <table class="table table-bordered" id="table1">
+        <tbody>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label for="numIndAssistGroup">
+                Number of individuals in assistance group who are earning money
+              </label>
+            </td>
+            <td align="center" class="col-xs-6">
+              <input class="form-control" type="text" [(ngModel)]="worksize" size="2" name="worksize" maxlength="2">
+            </td>
+            <tr>
+              <td align="justify" class="col-xs-6">
+                <label for="numIndEarnMoney">
+                  Self Employment Income and Gross Earnings for each person
+                </label>
+              </td>
+              <td align="center" class="col-xs-6">
+                <div class="container-fluid">
+                  <div *ngFor="let dummy of ' '.repeat(worksize).split(''), let x = index">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td align="center" class="col-xs-2">
+                            Net Self Employment for Person {{x+1}}
+                            <input class="form-control" type="text" size="8" maxlength="8" id="selfemp{{x+1}}id" />
+                          </td>
+                          <td align="center" class="col-xs-2">
+                            Gross Earnings for Person {{x+1}}
+                            <input class="form-control" type="text" size="8" maxlength="8" id="otherear{{x+1}}id" />
+                          </td>
+                          <td align="center" class="col-xs-2">
+                            Total Gross Income for Person {{x+1}}
+                            <input class="form-control" type="text" size="8" maxlength="8" id="grossinc{{x+1}}id" />
+                          </td>
+                          <td align="center" class="col-xs-2">
+                            Work Expense deduction
+                            <input class="form-control" type="text" size="8" maxlength="8" id="workexp{{x+1}}id" />
+                          </td>
+                          <td align="center" class="col-xs-2">
+                            Total net earnings for Person {{x+1}}
+                            <input class="form-control" type="text" size="8" maxlength="8" id="netinc{{x+1}}id" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <input type="submit" value='Submit' (click)="calcTotalGrossIncome($event);calcTotalNetIncome($event)">
+              <div class="wrapper">  Total Net Earnings<input align="right" class="form-control" type="text" size="8" maxlength="8" name="sumtotal" id="sumtotal" [(ngModel)]="sumtotal"/></div>
+              </td>
+            </tr>
+            
+              
+            <tr>
+              <td align="justify" class="col-xs-6">
+                <label> Total Dependency Care Deduction </label>
+              </td>
+              <td>
+                <div>
+                  <app-home (change)="calcTotalGrossIncome($event)" (ngModelChange)="calcTotalGrossIncome($event)" (click)="calcTotalGrossIncome($event)"></app-home>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td  class="col-xs-6">
+                <label> Total Combined Net Earnings from all Individuals </label>
+              </td>
+              <td align="right">
+                <b>=</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="totalinc" id="total" [(ngModel)]="totalnet" (change)="calcTotalNetIncome($event)" (ngModelChange)="calcTotalNetIncome($event)" />
+              </td>
+            </tr>
+            <tr>
+              <td align="justify" class="col-xs-6">
+                <label> Child Support Income </label>
+              </td>
+              <td>
+                <b>+</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="childsup" [(ngModel)]="childsupport" (change)="calcTotalNetIncome($event)" />
+              </td>
+            </tr>
+            <tr>
+              <td align="justify" class="col-xs-6">
+                <label> Other unearned Income </label>
+              </td>
+              <td>
+                <b>+</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="otherunea" [(ngModel)]="otherunearned" (change)="calcTotalNetIncome($event)" />
+              </td>
+            </tr>
+            <tr>
+              <td align="justify" class="col-xs-6">
+                <label> Total Net Income </label>
+              </td>
+              <td align="right">
+                <b>=</b>
+                <input class="form-control" type="text" size="8" maxlength="8" name="totalnetincome" [(ngModel)]="totalnetincome" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label> Assistant Group Size </label>
+               &nbsp;&nbsp; <input class="form-control" type="text" size="8" maxlength="8" name="agroupsize" id="agroupsize" value=14 />
+              </td>
+              <td align="right">
+                <label> CNS (Net) Income Standard </label>
+                &nbsp;&nbsp;<input class="form-control" type="text" size="8" maxlength="8" name="cnsstd" id="cnsstd" value=1000 />
+                <br/>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label> Total Net Income </label>
+              </td>
+              <td align="right">
+                -
+                <input class="form-control" type="text" size="8" maxlength="8" name="totalnetincome" [(ngModel)]="totalnetincome" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label> Deficit </label>
+              </td>
+              <td align="right">
+                <label> Calculate Deficit </label>
+            &nbsp;    <input type="submit" value='Submit' (click)="calcTotalDeficit($event)">
+                
+               = <input class="form-control" align="right" type="text" size="8" maxlength="8" name="deficit" [(ngModel)]="deficit" />
+              
+              </td>
+            </tr>
+        </tbody>
+      </table>
+      <label>Pass/Fail CNS(Net) Income Test &nbsp; </label><input class="form-control" type="text" size="8" maxlength="8" name="result" id='result12' />   
+    </div>
+    <div *ngIf="shownext" class="container-fluid">
+      <label align="center"> Benifits Calculator </label>
+      <table class="table table-bordered" id="table1">
+        <tbody>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label>
+                Total Countable Earnings
+              </label>
+            </td>
+            <td class="col-xs-6">
+              <input class="form-control" type="text" name="totalinc" id="total" [(ngModel)]="totalnet" size="8" maxlength="8">
+            </td>
+          </tr>
+          <tr>
+            <td class="col-xs-6">
+              <label>
+                Child Support Income
+              </label>
+            </td>
+            <td class="col-xs-6">
+              <input class="form-control" type="text" name="childsup" [(ngModel)]="childsupport" size="8" maxlength="8">
+            </td>
+          </tr>
+          <tr>
+            <td class="col-xs-6">
+              <label>
+                Other Unearned Income
+              </label>
+            </td>
+            <td class="col-xs-6">
+              <input class="form-control" type="text" name="otherunea" [(ngModel)]="otherunearned" size="8" maxlength="8">
+            </td>
+          </tr>
+          <tr>
+            <td class="col-xs-6">
+              <label>
+                Total Countable Income
+              </label>
+            </td>
+            <td class="col-xs-6">
+              <input class="form-control" type="text" name="totalnetincome" [(ngModel)]="totalnetincome" size="8" maxlength="8">
+            </td>
+          </tr>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label>
+                Family Cap
+              </label>
+              <input class="form-control" type="text" name="familycap" [(ngModel)]="familycap" size="8" maxlength="8">
+            </td>
+            <td class="col-xs-6">
+              <label>SPA</label>
+              <input class="form-control" type="text" name="spa" [(ngModel)]="spa" size="8" maxlength="8" (click)="calcLesser($event)">
+            </td>
+          </tr>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label> Assistant Group Size </label>
+              <input class="form-control" type="text" size="8" maxlength="8" name="agroupsize" id="agroupsize" value=14 />
+            </td>
+            <td class="col-xs-6">
+              <label> Deficit </label>
+              <input class="form-control" type="text" size="8" maxlength="8" name="deficit" [(ngModel)]="deficit" />
+            </td>
+          </tr>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label>
+                Lesser of SPA or Deficit
+              </label>
+            </td>
+            <td class="col-xs-6">
+              <input class="form-control" type="text" name="lessofspaordeficit" [(ngModel)]="spaordeficit" size="8" maxlength="8" (click)="calcLesser($event)">
+            </td>
+          </tr>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label>
+                Recoupment Amount
+              </label>
+            </td>
+            <td class="col-xs-6">
+              <label>-</label>
+              <input class="form-control" type="text" name="recoupment" [(ngModel)]="recoupment" size="8" maxlength="8" (change)="calcLesser($event)">
+            </td>
+          </tr>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label>
+                New Grant Benifit amount
+              </label>
+            </td>
+            <td class="col-xs-6">
+              <input class="form-control" type="text" name="newgrant" [(ngModel)]="newgrant" size="8" maxlength="8">
+            </td>
+          </tr>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label>
+                Penalty Amount
+              </label>
+              <select id="selectpenalty" (click)="calcPenalty($event)" value=''>
+                <option value="0">
+                <option value="20">20%
+                  <option value="40">40%
+              </select>
+            </td>
+            <td class="col-xs-6">
+              <label>-</label>
+              <input class="form-control" type="text" name="penalty" [(ngModel)]="penalty" size="8" maxlength="8">
+            </td>
+          </tr>
+          <tr>
+            <td align="justify" class="col-xs-6">
+              <label>
+                Recurring Grant Amount
+              </label>
+            </td>
+            <td class="col-xs-6">
+              <input class="form-control" type="text" name="recurring" [(ngModel)]="recurring" size="8" maxlength="8">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="wrap">
+      <input align="right" type="button" value="Reset" (click)="resetAll($event)">
+    </div>
+
+    
+  </form>
+</body>
+</html>
+

@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <table class="table table-bordered" id="table4">
+    <tbody>
+      <tr>
+        <td align="justify" class="col-xs-8">
+          <label for="dependentChildren">
+            Dependent Care Deduction Calculator
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td align="justify" class="col-xs-8">
+          <label for="dependentChildren">
+            Number of Dependent Children
+          </label>
+          <input class="form-control" type="text" [(ngModel)]="num" size="2" maxlength="2" (change)="displayChildrenFields($event)" (click)="showGreeting=false">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="container-fluid">
+  <div *ngFor="let dummy of ' '.repeat(num).split(''), let x = index">
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <td align="center" class="col-xs-3">
+            Enter CC paid for Child {{x+1}}
+            <input class="form-control" type="text" size="8" maxlength="8" id="earned{{x+1}}id" class="earned" (change)="displayDependentCare($event)">
+            <br/>
+          </td>
+          <td align="center" class="col-xs-3">
+            Select Age of Child {{x+1}}
+            <select id="select{{x+1}}id" (click)="displayDependentSelected($event) ">
+              <option id="1">Under 2</option>
+              <option id="2">2 and older</option>
+            </select>
+          </td>
+          <td align="center" class="col-xs-3">
+            Maximum Deduction
+            <input class="form-control" type="text" size="5" maxlength="5" id="max{{x+1}}id" value=200>
+          </td>
+          <td align="center" class="col-xs-3">
+            Allowable Deduction
+            <input class="form-control" type="text" size="5" maxlength="5" id="allow{{x+1}}id">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <label id="deductionid"> Calculate Deduction
+    <input type="submit" value='Submit' (click)="calcDeduction()"> </label>
+
+    &nbsp;&nbsp;<input align="right" type="button" value="Reset" (click)="resetAll($event)">
+    
+</div>
+<div align="left">
+  <b> - </b>
+  <label> Total deduction </label>
+  &nbsp;&nbsp;<input class="form-control" type="text" id="totaldeduction" name="totaldedc" value='0' size="8" maxlength="8">
+</div>
